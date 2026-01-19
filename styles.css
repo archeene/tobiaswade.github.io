@@ -1002,8 +1002,7 @@ ul {
     position: relative;
     overflow: hidden;
     border-radius: 5px;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    aspect-ratio: 5 / 8;
 }
 
 .glitch-carousel-slide {
@@ -1013,8 +1012,10 @@ ul {
 
 .glitch-carousel-slide img {
     width: 100%;
-    aspect-ratio: 0.625;
+    height: auto;
+    aspect-ratio: 5 / 8;
     object-fit: cover;
+    object-position: top center;
     border-radius: 5px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     transition: box-shadow 0.3s ease;
