@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://tobiaswade.com/</loc>
+        <lastmod>2026-01-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <image:image>
+            <image:loc>https://tobiaswade.com/Cover.png</image:loc>
+            <image:title>Tobias Wade Horror Books Collection</image:title>
+            <image:caption>Haunted House Publishing - Horror short stories, dark fantasy, and anthologies by Tobias Wade</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://tobiaswade.com/51-Sleepless.jpg</image:loc>
+            <image:title>51 Sleepless Nights Book Cover</image:title>
+            <image:caption>51 Sleepless Nights - Horror short story collection by Tobias Wade</image:caption>
+        </image:image>
+    </url>
+
+    <!-- About Page -->
+    <url>
+        <loc>https://tobiaswade.com/about.html</loc>
+        <lastmod>2026-01-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://tobiaswade.com/creator.jpg</image:loc>
+            <image:title>Tobias Wade - Horror Author</image:title>
+            <image:caption>Tobias Wade, founder of Haunted House Publishing and author of 51 Sleepless Nights</image:caption>
+        </image:image>
+    </url>
+
+</urlset>

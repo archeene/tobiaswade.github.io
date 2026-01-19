@@ -1,0 +1,15 @@
+# Robots.txt for tobiaswade.com
+# Haunted House Publishing - Horror Books by Tobias Wade
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://tobiaswade.com/sitemap.xml
+
+# Crawl-delay for politeness (optional)
+Crawl-delay: 1
+
+# Block common irrelevant paths (if they exist)
+Disallow: /404.html
+Disallow: /*.json$

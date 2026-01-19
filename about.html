@@ -3,17 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Creator | Haunted House Publishing</title>
+
+    <!-- Primary SEO Meta Tags -->
+    <title>About Tobias Wade | Horror Author & Creator at Haunted House Publishing</title>
+    <meta name="description" content="Meet Tobias Wade, horror author and founder of Haunted House Publishing. From neuroscience to dark fiction, discover the mind behind bestselling horror books like 51 Sleepless Nights.">
+    <meta name="keywords" content="Tobias Wade, horror author, Tom Bombadil, Haunted House Publishing, indie author, dark fiction writer, 51 Sleepless Nights author">
+    <meta name="author" content="Tobias Wade">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tobiaswade.com/about.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="https://tobiaswade.com/about.html">
+    <meta property="og:title" content="About Tobias Wade | Horror Author & Creator">
+    <meta property="og:description" content="Meet Tobias Wade, horror author and founder of Haunted House Publishing. From neuroscience to dark fiction, discover the mind behind bestselling horror books.">
+    <meta property="og:image" content="https://tobiaswade.com/creator.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
+    <meta property="og:site_name" content="Haunted House Publishing">
+    <meta property="profile:first_name" content="Tobias">
+    <meta property="profile:last_name" content="Wade">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@sirtobiaswade">
+    <meta name="twitter:creator" content="@sirtobiaswade">
+    <meta name="twitter:title" content="About Tobias Wade | Horror Author">
+    <meta name="twitter:description" content="Meet Tobias Wade, horror author and founder of Haunted House Publishing. Discover the mind behind bestselling horror books.">
+    <meta name="twitter:image" content="https://tobiaswade.com/creator.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="Background.jpg" as="image">
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data - Person/Author -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Tobias Wade",
+        "alternateName": "Tom Bombadil",
+        "url": "https://tobiaswade.com/about.html",
+        "image": "https://tobiaswade.com/creator.jpg",
+        "jobTitle": "Horror Author",
+        "description": "Philosopher, novelist, guitarist, game designer, and programmer. Former neuroscience researcher turned horror author and indie publisher.",
+        "worksFor": {
+            "@type": "Organization",
+            "name": "Haunted House Publishing",
+            "url": "https://tobiaswade.com"
+        },
+        "email": "mailto:Sirtobiaswade@gmail.com",
+        "sameAs": [
+            "https://x.com/sirtobiaswade",
+            "https://www.youtube.com/@sirtobiaswade"
+        ],
+        "knowsAbout": ["Horror Fiction", "Dark Fantasy", "Game Design", "Philosophy", "Neuroscience"]
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://tobiaswade.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About the Author",
+                "item": "https://tobiaswade.com/about.html"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
-
     <!-- Interactive Reveal Background -->
-    <div class="reveal-background">
-        <img src="Background.jpg" alt="" class="skyline-image" id="skylineImg">
+    <div class="reveal-background" aria-hidden="true">
+        <img src="Background.jpg" alt="" class="skyline-image" id="skylineImg" loading="eager">
         <canvas id="revealCanvas"></canvas>
     </div>
 
@@ -24,22 +110,17 @@
             const ctx = canvas.getContext('2d');
             const skylineImg = document.getElementById('skylineImg');
 
-            let targetX = -1000;
-            let targetY = -1000;
-            let currentX = -1000;
-            let currentY = -1000;
-
-            let revealRadius = 450;
-            let followSpeed = 0.08;
+            let targetX = -1000, targetY = -1000;
+            let currentX = -1000, currentY = -1000;
+            const revealRadius = 450;
+            const followSpeed = 0.08;
             let isImageLoaded = false;
             let imgParams = null;
 
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
-                if (isImageLoaded) {
-                    imgParams = calculateImageParams();
-                }
+                if (isImageLoaded) imgParams = calculateImageParams();
             }
 
             function calculateImageParams() {
@@ -47,12 +128,10 @@
                 const imgH = skylineImg.naturalHeight;
                 const canvasW = canvas.width;
                 const canvasH = canvas.height;
-
                 const imgRatio = imgW / imgH;
                 const canvasRatio = canvasW / canvasH;
 
                 let drawWidth, drawHeight, offsetX, offsetY;
-
                 if (canvasRatio > imgRatio) {
                     drawWidth = canvasW;
                     drawHeight = canvasW / imgRatio;
@@ -64,7 +143,6 @@
                     offsetX = (canvasW - drawWidth) / 2;
                     offsetY = 0;
                 }
-
                 return { drawWidth, drawHeight, offsetX, offsetY };
             }
 
@@ -72,66 +150,30 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 if (targetX > 0 && targetY > 0) {
-                    if (currentX < 0) {
-                        currentX = targetX;
-                        currentY = targetY;
-                    } else {
-                        currentX += (targetX - currentX) * followSpeed;
-                        currentY += (targetY - currentY) * followSpeed;
-                    }
+                    currentX = currentX < 0 ? targetX : currentX + (targetX - currentX) * followSpeed;
+                    currentY = currentY < 0 ? targetY : currentY + (targetY - currentY) * followSpeed;
                 } else {
-                    currentX = -1000;
-                    currentY = -1000;
+                    currentX = currentY = -1000;
                 }
 
                 if (!isImageLoaded || !imgParams || currentX < 0 || currentY < 0) return;
 
                 ctx.save();
-
-                ctx.drawImage(
-                    skylineImg,
-                    imgParams.offsetX,
-                    imgParams.offsetY,
-                    imgParams.drawWidth,
-                    imgParams.drawHeight
-                );
-
+                ctx.drawImage(skylineImg, imgParams.offsetX, imgParams.offsetY, imgParams.drawWidth, imgParams.drawHeight);
                 ctx.globalCompositeOperation = 'destination-in';
-                const alphaMask = ctx.createRadialGradient(
-                    currentX, currentY, 0,
-                    currentX, currentY, revealRadius
-                );
 
-                alphaMask.addColorStop(0, 'rgba(255, 255, 255, 1)');
-                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 1)');
-                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 0.9)');
-                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.9)');
-                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.8)');
-                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
-                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.7)');
-                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.7)');
-                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.6)');
-                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.6)');
-                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.5)');
-                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.5)');
-                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.4)');
-                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.4)');
-                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.3)');
-                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.3)');
-                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.2)');
-                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.2)');
-                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.1)');
-                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.1)');
-                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.05)');
-                alphaMask.addColorStop(0.7333, 'rgba(255, 255, 255, 0.04)');
-                alphaMask.addColorStop(0.8, 'rgba(255, 255, 255, 0.03)');
-                alphaMask.addColorStop(0.8667, 'rgba(255, 255, 255, 0.02)');
-                alphaMask.addColorStop(0.9333, 'rgba(255, 255, 255, 0.01)');
-                alphaMask.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+                const alphaMask = ctx.createRadialGradient(currentX, currentY, 0, currentX, currentY, revealRadius);
+                const stops = [
+                    [0, 1], [0.0667, 1], [0.0667, 0.9], [0.1333, 0.9], [0.1333, 0.8],
+                    [0.2, 0.8], [0.2, 0.7], [0.2667, 0.7], [0.2667, 0.6], [0.3333, 0.6],
+                    [0.3333, 0.5], [0.4, 0.5], [0.4, 0.4], [0.4667, 0.4], [0.4667, 0.3],
+                    [0.5333, 0.3], [0.5333, 0.2], [0.6, 0.2], [0.6, 0.1], [0.6667, 0.1],
+                    [0.6667, 0.05], [0.7333, 0.04], [0.8, 0.03], [0.8667, 0.02], [0.9333, 0.01], [1, 0]
+                ];
+                stops.forEach(([pos, alpha]) => alphaMask.addColorStop(pos, `rgba(255,255,255,${alpha})`));
 
                 ctx.fillStyle = alphaMask;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
                 ctx.restore();
             }
 
@@ -140,126 +182,139 @@
                 requestAnimationFrame(animate);
             }
 
-            document.addEventListener('mousemove', (e) => {
-                targetX = e.clientX;
-                targetY = e.clientY;
-            });
+            document.addEventListener('mousemove', e => { targetX = e.clientX; targetY = e.clientY; }, { passive: true });
+            document.addEventListener('touchmove', e => { targetX = e.touches[0].clientX; targetY = e.touches[0].clientY; }, { passive: true });
+            document.addEventListener('touchstart', e => { targetX = e.touches[0].clientX; targetY = e.touches[0].clientY; }, { passive: true });
+            document.addEventListener('mouseleave', () => { targetX = targetY = -1000; });
+            window.addEventListener('resize', resize, { passive: true });
 
-            document.addEventListener('touchmove', (e) => {
-                const touch = e.touches[0];
-                targetX = touch.clientX;
-                targetY = touch.clientY;
-            });
-
-            document.addEventListener('touchstart', (e) => {
-                const touch = e.touches[0];
-                targetX = touch.clientX;
-                targetY = touch.clientY;
-            });
-
-            document.addEventListener('mouseleave', () => {
-                targetX = -1000;
-                targetY = -1000;
-            });
-
-            window.addEventListener('resize', resize);
-
-            skylineImg.onload = () => {
-                isImageLoaded = true;
-                imgParams = calculateImageParams();
-                resize();
-                animate();
-            };
-
-            if (skylineImg.complete && skylineImg.naturalWidth > 0) {
+            function init() {
                 isImageLoaded = true;
                 imgParams = calculateImageParams();
                 resize();
                 animate();
             }
+
+            skylineImg.onload = init;
+            if (skylineImg.complete && skylineImg.naturalWidth > 0) init();
         })();
     </script>
 
     <div class="main-container">
         <!-- Navigation -->
-        <nav class="navbar">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
             <div class="nav-container">
-                <button class="nav-toggle" aria-label="Toggle navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                <ul class="nav-menu">
-                    <li><a href="index.html#books">Books</a></li>
-                    <li><a href="index.html#games">Games</a></li>
+                <ul class="nav-menu" id="nav-menu" role="menubar">
+                    <li role="none"><a href="index.html#books" role="menuitem">Books</a></li>
+                    <li role="none"><a href="index.html#games" role="menuitem">Games</a></li>
                 </ul>
-                <a href="about.html" class="nav-creator-btn">The Creator</a>
+                <a href="about.html" class="nav-creator-btn" aria-current="page">The Creator</a>
             </div>
         </nav>
 
-        <!-- About Section -->
-        <section class="about-page">
-            <div class="container">
-                <h1 class="about-title">Tom Bombadil</h1>
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a itemprop="item" href="index.html"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <span itemprop="name" aria-current="page">About</span>
+                    <meta itemprop="position" content="2">
+                </li>
+            </ol>
+        </nav>
 
-                <div class="about-layout">
-                    <div class="about-sidebar">
-                        <img src="creator.jpg" alt="Tobias Wade" class="creator-photo">
-                        <div class="creator-contact">
-                            <span>Contact: </span><a href="mailto:Sirtobiaswade@gmail.com">Sirtobiaswade@gmail.com</a><span> or on </span><a href="https://x.com/sirtobiaswade">X</a>
+        <!-- About Section -->
+        <main>
+            <article class="about-page" itemscope itemtype="https://schema.org/Person">
+                <div class="container">
+                    <h1 class="about-title" itemprop="name">Tobias Wade</h1>
+                    <p class="about-subtitle" itemprop="alternateName">Publishing as Tom Bombadil</p>
+
+                    <div class="about-layout">
+                        <aside class="about-sidebar">
+                            <img src="creator.jpg" alt="Tobias Wade - Horror Author and Founder of Haunted House Publishing" class="creator-photo" itemprop="image" width="250" height="auto" loading="eager">
+                            <div class="creator-contact">
+                                <p><strong>Contact:</strong></p>
+                                <p>
+                                    <a href="mailto:Sirtobiaswade@gmail.com" itemprop="email" aria-label="Email Tobias Wade">Sirtobiaswade@gmail.com</a>
+                                </p>
+                                <p>
+                                    <a href="https://x.com/sirtobiaswade" rel="noopener noreferrer" itemprop="sameAs" aria-label="Follow on X (Twitter)">@sirtobiaswade on X</a>
+                                </p>
+                            </div>
+                        </aside>
+
+                        <div class="about-content" itemprop="description">
+                            <p>My name is <strong>Tobias Wade</strong>, and I am currently publishing games and books under the name <em>Tom Bombadil</em>. I am a <span itemprop="jobTitle">philosopher, novelist, guitarist, game designer, and programmer</span>.</p>
+
+                            <p>I previously worked in <strong>neuroscience</strong>. During my studies it struck me as odd that I could learn so much about behavior without understanding the intricacies of human nature. I realized that I learned more about what it means to be human from reading stories and playing games than I ever had from my textbooks, and I was inspired to create.</p>
+
+                            <p>A general stubbornness about my creative pursuits led me to starting an indie press, <strong itemprop="worksFor">Haunted House Publishing</strong>, and to become a solo developer to do things my own way.</p>
+
+                            <section class="author-works" aria-labelledby="works-heading">
+                                <h2 id="works-heading">Notable Works</h2>
+                                <ul class="works-list">
+                                    <li><a href="https://geni.us/51SleeplessNights" rel="noopener">51 Sleepless Nights</a> - Bestselling horror short story collection</li>
+                                    <li><a href="https://www.amazon.com/dp/B0G52ZP2B2" rel="noopener">Psychic Curse</a> - Dark fantasy novel</li>
+                                    <li><a href="http://geni.us/Monstro" rel="noopener">Monstromonicon</a> - 100 monster stories anthology</li>
+                                </ul>
+                            </section>
                         </div>
                     </div>
 
-                    <div class="about-content">
-                        <p>My name is Tobias Wade, and I am currently publishing games and books under the name Tom Bombadil. I am a philosopher, novelist, guitarist, game designer, and programmer.</p>
-
-                        <p>I previously worked in neuroscience. During my studies it struck me as odd that I could learn so much about behavior without understanding the intricacies of human nature. I realized that I learned more about what it means to be human from reading stories and playing games than I ever had from my text books, and I was inspired to create.</p>
-
-                        <p>A general stubbornness about my creative pursuits led me to starting an indie press, Haunted House Publishing, and to become a solo developer to do things my own way.</p>
+                    <div class="back-link">
+                        <a href="index.html" class="btn btn-primary" aria-label="Return to homepage">Back to Home</a>
                     </div>
                 </div>
-
-                <div class="back-link">
-                    <a href="index.html" class="btn btn-primary">Back to Home</a>
-                </div>
-            </div>
-        </section>
+            </article>
+        </main>
 
         <!-- Footer -->
-        <footer class="footer">
+        <footer class="footer" role="contentinfo">
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-logo">
-                        <img src="logo-full.png" alt="Haunted House Publishing">
+                        <img src="logo-full.png" alt="Haunted House Publishing" width="300" height="auto" loading="lazy">
                     </div>
 
                     <div class="footer-cta">
                         <div class="footer-cta-item">
                             <h4>Read</h4>
-                            <a href="#" class="btn btn-primary">Read 1 FREE</a>
+                            <a href="https://dl.bookfunnel.com/u6n59sx03e" class="btn btn-primary" rel="noopener" aria-label="Download a free horror book">Read 1 FREE</a>
                         </div>
                         <div class="footer-cta-item">
                             <h4>Follow</h4>
-                            <a href="#" class="social-btn">
-                                <img src="X-300x300.webp" alt="X/Twitter">
+                            <a href="https://x.com/sirtobiaswade" class="social-btn" rel="noopener noreferrer" aria-label="Follow Tobias Wade on X (Twitter)">
+                                <img src="X-300x300.webp" alt="X (Twitter)" width="50" height="50" loading="lazy">
                             </a>
                         </div>
                         <div class="footer-cta-item">
                             <h4>Watch</h4>
-                            <a href="#" class="social-btn">
-                                <img src="You-300x180.webp" alt="YouTube">
+                            <a href="https://www.youtube.com/@sirtobiaswade" class="social-btn" rel="noopener noreferrer" aria-label="Watch Tobias Wade on YouTube">
+                                <img src="You-300x180.webp" alt="YouTube" width="50" height="30" loading="lazy">
                             </a>
                         </div>
                     </div>
 
                     <div class="footer-info">
-                        <p class="copyright">&copy; 2026 Haunted House Publishing</p>
+                        <p class="copyright">&copy; 2026 Haunted House Publishing. All rights reserved.</p>
+                        <nav class="footer-nav" aria-label="Footer navigation">
+                            <a href="index.html">Books</a>
+                        </nav>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
