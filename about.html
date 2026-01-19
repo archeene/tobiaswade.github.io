@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Creator | Haunted House Publishing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Interactive Reveal Background -->
+    <div class="reveal-background">
+        <img src="Assets/Background.jpg" alt="" class="skyline-image" id="skylineImg">
+        <canvas id="revealCanvas"></canvas>
+    </div>
+
+    <script>
+        // Interactive Skyline Reveal Effect
+        (function() {
+            const canvas = document.getElementById('revealCanvas');
+            const ctx = canvas.getContext('2d');
+            const skylineImg = document.getElementById('skylineImg');
+
+            let targetX = -1000;
+            let targetY = -1000;
+            let currentX = -1000;
+            let currentY = -1000;
+
+            let revealRadius = 450;
+            let followSpeed = 0.08;
+            let isImageLoaded = false;
+            let imgParams = null;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                if (isImageLoaded) {
+                    imgParams = calculateImageParams();
+                }
+            }
+
+            function calculateImageParams() {
+                const imgW = skylineImg.naturalWidth;
+                const imgH = skylineImg.naturalHeight;
+                const canvasW = canvas.width;
+                const canvasH = canvas.height;
+
+                const imgRatio = imgW / imgH;
+                const canvasRatio = canvasW / canvasH;
+
+                let drawWidth, drawHeight, offsetX, offsetY;
+
+                if (canvasRatio > imgRatio) {
+                    drawWidth = canvasW;
+                    drawHeight = canvasW / imgRatio;
+                    offsetX = 0;
+                    offsetY = (canvasH - drawHeight) / 2;
+                } else {
+                    drawHeight = canvasH;
+                    drawWidth = canvasH * imgRatio;
+                    offsetX = (canvasW - drawWidth) / 2;
+                    offsetY = 0;
+                }
+
+                return { drawWidth, drawHeight, offsetX, offsetY };
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (targetX > 0 && targetY > 0) {
+                    if (currentX < 0) {
+                        currentX = targetX;
+                        currentY = targetY;
+                    } else {
+                        currentX += (targetX - currentX) * followSpeed;
+                        currentY += (targetY - currentY) * followSpeed;
+                    }
+                } else {
+                    currentX = -1000;
+                    currentY = -1000;
+                }
+
+                if (!isImageLoaded || !imgParams || currentX < 0 || currentY < 0) return;
+
+                ctx.save();
+
+                ctx.drawImage(
+                    skylineImg,
+                    imgParams.offsetX,
+                    imgParams.offsetY,
+                    imgParams.drawWidth,
+                    imgParams.drawHeight
+                );
+
+                ctx.globalCompositeOperation = 'destination-in';
+                const alphaMask = ctx.createRadialGradient(
+                    currentX, currentY, 0,
+                    currentX, currentY, revealRadius
+                );
+
+                alphaMask.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 1)');
+                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 0.9)');
+                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.9)');
+                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.8)');
+                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
+                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.7)');
+                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.7)');
+                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.6)');
+                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.6)');
+                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.5)');
+                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.5)');
+                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.4)');
+                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.4)');
+                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.3)');
+                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.3)');
+                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.2)');
+                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.2)');
+                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.1)');
+                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.1)');
+                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.05)');
+                alphaMask.addColorStop(0.7333, 'rgba(255, 255, 255, 0.04)');
+                alphaMask.addColorStop(0.8, 'rgba(255, 255, 255, 0.03)');
+                alphaMask.addColorStop(0.8667, 'rgba(255, 255, 255, 0.02)');
+                alphaMask.addColorStop(0.9333, 'rgba(255, 255, 255, 0.01)');
+                alphaMask.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+
+                ctx.fillStyle = alphaMask;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.restore();
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                targetX = touch.clientX;
+                targetY = touch.clientY;
+            });
+
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                targetX = touch.clientX;
+                targetY = touch.clientY;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                targetX = -1000;
+                targetY = -1000;
+            });
+
+            window.addEventListener('resize', resize);
+
+            skylineImg.onload = () => {
+                isImageLoaded = true;
+                imgParams = calculateImageParams();
+                resize();
+                animate();
+            };
+
+            if (skylineImg.complete && skylineImg.naturalWidth > 0) {
+                isImageLoaded = true;
+                imgParams = calculateImageParams();
+                resize();
+                animate();
+            }
+        })();
+    </script>
+
+    <div class="main-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="index.html#books">Books</a></li>
+                    <li><a href="index.html#games">Games</a></li>
+                </ul>
+                <a href="about.html" class="nav-creator-btn">The Creator</a>
+            </div>
+        </nav>
+
+        <!-- About Section -->
+        <section class="about-page">
+            <div class="container">
+                <h1 class="about-title">Tom Bombadil</h1>
+
+                <div class="about-layout">
+                    <div class="about-sidebar">
+                        <img src="Assets/creator.jpg" alt="Tobias Wade" class="creator-photo">
+                        <div class="creator-contact">
+                            <span>Contact: </span><a href="mailto:Sirtobiaswade@gmail.com">Sirtobiaswade@gmail.com</a><span> or on </span><a href="https://x.com/sirtobiaswade">X</a>
+                        </div>
+                    </div>
+
+                    <div class="about-content">
+                        <p>My name is Tobias Wade, and I am currently publishing games and books under the name Tom Bombadil. I am a philosopher, novelist, guitarist, game designer, and programmer.</p>
+
+                        <p>I previously worked in neuroscience. During my studies it struck me as odd that I could learn so much about behavior without understanding the intricacies of human nature. I realized that I learned more about what it means to be human from reading stories and playing games than I ever had from my text books, and I was inspired to create.</p>
+
+                        <p>A general stubbornness about my creative pursuits led me to starting an indie press, Haunted House Publishing, and to become a solo developer to do things my own way.</p>
+                    </div>
+                </div>
+
+                <div class="back-link">
+                    <a href="index.html" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <img src="Assets/logo full.png" alt="Haunted House Publishing">
+                    </div>
+
+                    <div class="footer-cta">
+                        <div class="footer-cta-item">
+                            <h4>Read</h4>
+                            <a href="#" class="btn btn-primary">Read 1 FREE</a>
+                        </div>
+                        <div class="footer-cta-item">
+                            <h4>Follow</h4>
+                            <a href="#" class="social-btn">
+                                <img src="Assets/X-300x300.webp" alt="X/Twitter">
+                            </a>
+                        </div>
+                        <div class="footer-cta-item">
+                            <h4>Watch</h4>
+                            <a href="#" class="social-btn">
+                                <img src="Assets/You-300x180.webp" alt="YouTube">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-info">
+                        <p class="copyright">&copy; 2026 Haunted House Publishing</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

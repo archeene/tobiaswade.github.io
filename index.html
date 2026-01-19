@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tobias Wade Books | Haunted House Publishing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Interactive Reveal Background -->
+    <div class="reveal-background">
+        <img src="Assets/Background.jpg" alt="" class="skyline-image" id="skylineImg">
+        <canvas id="revealCanvas"></canvas>
+    </div>
+
+    <script>
+        // Interactive Skyline Reveal Effect
+        (function() {
+            const canvas = document.getElementById('revealCanvas');
+            const ctx = canvas.getContext('2d');
+            const skylineImg = document.getElementById('skylineImg');
+
+            let targetX = -1000;
+            let targetY = -1000;
+            let currentX = -1000;
+            let currentY = -1000;
+
+            let revealRadius = 450;
+            let followSpeed = 0.08;
+            let isImageLoaded = false;
+            let imgParams = null;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                if (isImageLoaded) {
+                    imgParams = calculateImageParams();
+                }
+            }
+
+            function calculateImageParams() {
+                const imgW = skylineImg.naturalWidth;
+                const imgH = skylineImg.naturalHeight;
+                const canvasW = canvas.width;
+                const canvasH = canvas.height;
+
+                const imgRatio = imgW / imgH;
+                const canvasRatio = canvasW / canvasH;
+
+                let drawWidth, drawHeight, offsetX, offsetY;
+
+                if (canvasRatio > imgRatio) {
+                    drawWidth = canvasW;
+                    drawHeight = canvasW / imgRatio;
+                    offsetX = 0;
+                    offsetY = (canvasH - drawHeight) / 2;
+                } else {
+                    drawHeight = canvasH;
+                    drawWidth = canvasH * imgRatio;
+                    offsetX = (canvasW - drawWidth) / 2;
+                    offsetY = 0;
+                }
+
+                return { drawWidth, drawHeight, offsetX, offsetY };
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (targetX > 0 && targetY > 0) {
+                    if (currentX < 0) {
+                        currentX = targetX;
+                        currentY = targetY;
+                    } else {
+                        currentX += (targetX - currentX) * followSpeed;
+                        currentY += (targetY - currentY) * followSpeed;
+                    }
+                } else {
+                    currentX = -1000;
+                    currentY = -1000;
+                }
+
+                if (!isImageLoaded || !imgParams || currentX < 0 || currentY < 0) return;
+
+                ctx.save();
+
+                ctx.drawImage(
+                    skylineImg,
+                    imgParams.offsetX,
+                    imgParams.offsetY,
+                    imgParams.drawWidth,
+                    imgParams.drawHeight
+                );
+
+                ctx.globalCompositeOperation = 'destination-in';
+                const alphaMask = ctx.createRadialGradient(
+                    currentX, currentY, 0,
+                    currentX, currentY, revealRadius
+                );
+
+                alphaMask.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 1)');
+                alphaMask.addColorStop(0.0667, 'rgba(255, 255, 255, 0.9)');
+                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.9)');
+                alphaMask.addColorStop(0.1333, 'rgba(255, 255, 255, 0.8)');
+                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
+                alphaMask.addColorStop(0.2, 'rgba(255, 255, 255, 0.7)');
+                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.7)');
+                alphaMask.addColorStop(0.2667, 'rgba(255, 255, 255, 0.6)');
+                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.6)');
+                alphaMask.addColorStop(0.3333, 'rgba(255, 255, 255, 0.5)');
+                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.5)');
+                alphaMask.addColorStop(0.4, 'rgba(255, 255, 255, 0.4)');
+                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.4)');
+                alphaMask.addColorStop(0.4667, 'rgba(255, 255, 255, 0.3)');
+                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.3)');
+                alphaMask.addColorStop(0.5333, 'rgba(255, 255, 255, 0.2)');
+                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.2)');
+                alphaMask.addColorStop(0.6, 'rgba(255, 255, 255, 0.1)');
+                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.1)');
+                alphaMask.addColorStop(0.6667, 'rgba(255, 255, 255, 0.05)');
+                alphaMask.addColorStop(0.7333, 'rgba(255, 255, 255, 0.04)');
+                alphaMask.addColorStop(0.8, 'rgba(255, 255, 255, 0.03)');
+                alphaMask.addColorStop(0.8667, 'rgba(255, 255, 255, 0.02)');
+                alphaMask.addColorStop(0.9333, 'rgba(255, 255, 255, 0.01)');
+                alphaMask.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+
+                ctx.fillStyle = alphaMask;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.restore();
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                targetX = touch.clientX;
+                targetY = touch.clientY;
+            });
+
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                targetX = touch.clientX;
+                targetY = touch.clientY;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                targetX = -1000;
+                targetY = -1000;
+            });
+
+            window.addEventListener('resize', resize);
+
+            skylineImg.onload = () => {
+                isImageLoaded = true;
+                imgParams = calculateImageParams();
+                resize();
+                animate();
+            };
+
+            if (skylineImg.complete && skylineImg.naturalWidth > 0) {
+                isImageLoaded = true;
+                imgParams = calculateImageParams();
+                resize();
+                animate();
+            }
+        })();
+    </script>
+
+    <div class="main-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#books">Books</a></li>
+                    <li><a href="#games">Games</a></li>
+                </ul>
+                <a href="about.html" class="nav-creator-btn">The Creator</a>
+            </div>
+        </nav>
+
+        <!-- Logo -->
+        <div class="logo-section">
+            <img src="Assets/logo full.png" alt="Haunted House Publishing Logo" class="site-logo">
+        </div>
+
+        <!-- Hero Banner -->
+        <header class="hero-banner">
+            <img src="Assets/Cover.png" alt="Haunted House Publishing">
+        </header>
+
+        <!-- Books Section - 2x2 Grid -->
+        <section class="section" id="books">
+            <div class="container">
+                <div class="section-cta">
+                    <a href="https://dl.bookfunnel.com/u6n59sx03e" class="btn btn-primary">Read 1 FREE</a>
+                </div>
+
+                <div class="carousel-grid">
+                    <!-- Horror Stories -->
+                    <div class="carousel-grid-item">
+                        <h2 class="section-title">Horror Stories</h2>
+                        <div class="glitch-carousel" data-carousel="sleepless">
+                            <div class="glitch-carousel-container">
+                                <a href="https://geni.us/51SleeplessNights" class="glitch-carousel-slide">
+                                    <img src="Assets/51-Sleepless.jpg" alt="51 Sleepless Nights">
+                                </a>
+                            </div>
+                            <div class="carousel-nav">
+                                <button class="carousel-arrow carousel-prev" aria-label="Previous">&#10094;</button>
+                                <div class="carousel-indicators">
+                                    <button class="carousel-indicator active" data-index="0"></button>
+                                    <button class="carousel-indicator" data-index="1"></button>
+                                    <button class="carousel-indicator" data-index="2"></button>
+                                    <button class="carousel-indicator" data-index="3"></button>
+                                </div>
+                                <button class="carousel-arrow carousel-next" aria-label="Next">&#10095;</button>
+                            </div>
+                            <div class="glitch-carousel-title">51 Sleepless Nights</div>
+                            <p class="carousel-description">The original collection of terrifying short stories that started it all.</p>
+                        </div>
+                    </div>
+
+                    <!-- Dark Fantasy -->
+                    <div class="carousel-grid-item">
+                        <h2 class="section-title">Dark Fantasy</h2>
+                        <div class="glitch-carousel" data-carousel="fantasy">
+                            <div class="glitch-carousel-container">
+                                <a href="https://www.amazon.com/dp/B0G52ZP2B2" class="glitch-carousel-slide">
+                                    <img src="Assets/Psychic-Curse.jpg" alt="Psychic Curse">
+                                </a>
+                            </div>
+                            <div class="carousel-nav">
+                                <button class="carousel-arrow carousel-prev" aria-label="Previous">&#10094;</button>
+                                <div class="carousel-indicators">
+                                    <button class="carousel-indicator active" data-index="0"></button>
+                                    <button class="carousel-indicator" data-index="1"></button>
+                                    <button class="carousel-indicator" data-index="2"></button>
+                                </div>
+                                <button class="carousel-arrow carousel-next" aria-label="Next">&#10095;</button>
+                            </div>
+                            <div class="glitch-carousel-title">Psychic Curse</div>
+                            <p class="carousel-description">Martin gains psychic powers from a medical experiment enabling mind-reading. He's perpetually aware of never being fully alone.</p>
+                        </div>
+                    </div>
+
+                    <!-- Anthologies -->
+                    <div class="carousel-grid-item">
+                        <h2 class="section-title">Anthologies</h2>
+                        <div class="glitch-carousel" data-carousel="anthologies">
+                            <div class="glitch-carousel-container">
+                                <a href="http://geni.us/Monstro" class="glitch-carousel-slide">
+                                    <img src="Assets/Monster-Monster.jpg" alt="Monstromonicon">
+                                </a>
+                            </div>
+                            <div class="carousel-nav">
+                                <button class="carousel-arrow carousel-prev" aria-label="Previous">&#10094;</button>
+                                <div class="carousel-indicators">
+                                    <button class="carousel-indicator active" data-index="0"></button>
+                                    <button class="carousel-indicator" data-index="1"></button>
+                                    <button class="carousel-indicator" data-index="2"></button>
+                                    <button class="carousel-indicator" data-index="3"></button>
+                                    <button class="carousel-indicator" data-index="4"></button>
+                                    <button class="carousel-indicator" data-index="5"></button>
+                                </div>
+                                <button class="carousel-arrow carousel-next" aria-label="Next">&#10095;</button>
+                            </div>
+                            <div class="glitch-carousel-title">Monstromonicon</div>
+                            <p class="carousel-description">100 Monster stories from around the world</p>
+                        </div>
+                    </div>
+
+                    <!-- Misc -->
+                    <div class="carousel-grid-item">
+                        <h2 class="section-title">Misc</h2>
+                        <div class="glitch-carousel" data-carousel="misc">
+                            <div class="glitch-carousel-container">
+                                <a href="https://www.amazon.com/dp/B0DD8MQKW6" class="glitch-carousel-slide">
+                                    <img src="Assets/Rhyming-Collection-768x1229.jpg" alt="Rhyming Collection">
+                                </a>
+                            </div>
+                            <div class="carousel-nav">
+                                <button class="carousel-arrow carousel-prev" aria-label="Previous">&#10094;</button>
+                                <div class="carousel-indicators">
+                                    <button class="carousel-indicator active" data-index="0"></button>
+                                    <button class="carousel-indicator" data-index="1"></button>
+                                </div>
+                                <button class="carousel-arrow carousel-next" aria-label="Next">&#10095;</button>
+                            </div>
+                            <div class="glitch-carousel-title">Graphic Novels</div>
+                            <p class="carousel-description">Horror stories told in poetic verse with full illustrations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <img src="Assets/logo text.png" alt="Haunted House Publishing">
+                    </div>
+
+                    <div class="footer-cta">
+                        <div class="footer-cta-item">
+                            <h4>Read</h4>
+                            <a href="https://dl.bookfunnel.com/u6n59sx03e" class="btn btn-primary">Read 1 FREE</a>
+                        </div>
+                        <div class="footer-cta-item">
+                            <h4>Follow</h4>
+                            <a href="https://x.com/sirtobiaswade" class="social-btn">
+                                <img src="Assets/X-300x300.webp" alt="X/Twitter">
+                            </a>
+                        </div>
+                        <div class="footer-cta-item">
+                            <h4>Watch</h4>
+                            <a href="https://www.youtube.com/@sirtobiaswade" class="social-btn">
+                                <img src="Assets/You-300x180.webp" alt="YouTube">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-info">
+                        <p class="copyright">&copy; 2026 Haunted House Publishing</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
