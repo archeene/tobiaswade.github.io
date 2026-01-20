@@ -1416,7 +1416,8 @@ ul {
 }
 
 .carousel-grid-item .glitch-carousel {
-    max-width: 72%;
+    width: 300px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
