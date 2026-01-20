@@ -41,9 +41,10 @@
     <link rel="dns-prefetch" href="https://www.amazon.com">
     <link rel="dns-prefetch" href="https://geni.us">
 
-    <!-- Preload Critical Assets -->
+    <!-- Preload Critical Assets (logo and cover first for fast initial render) -->
+    <link rel="preload" href="logo.full.png" as="image" fetchpriority="high">
+    <link rel="preload" href="Cover.png" as="image" fetchpriority="high">
     <link rel="preload" href="Background.jpg" as="image">
-    <link rel="preload" href="logo.full.png" as="image">
 
     <!-- Fonts with display swap for performance -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
@@ -251,13 +252,13 @@
 
         <!-- Logo -->
         <div class="logo-section">
-            <img src="logo.full.png" alt="Haunted House Publishing - Independent Horror Book Publisher" class="site-logo" width="252" height="auto" loading="eager">
+            <img src="logo.full.png" alt="Haunted House Publishing - Independent Horror Book Publisher" class="site-logo" width="252" height="auto" loading="eager" fetchpriority="high">
         </div>
 
         <!-- Hero Banner -->
         <header class="hero-banner">
             <h1 class="visually-hidden">Tobias Wade Horror Books - Haunted House Publishing</h1>
-            <img src="Cover.png" alt="Tobias Wade Horror Book Collection - Dark Fiction and Short Stories" width="945" height="auto" loading="eager">
+            <img src="Cover.png" alt="Tobias Wade Horror Book Collection - Dark Fiction and Short Stories" width="945" height="auto" loading="eager" fetchpriority="high">
         </header>
 
         <!-- Books Section - 2x2 Grid -->
